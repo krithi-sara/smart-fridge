@@ -25,22 +25,27 @@ const fastcsv = require('csv-parser');
 
 
 
-var url = ('mongodb+srv://yogesh:yogesh14@cluster0.eauui.mongodb.net/test')
-
-app.get("/",function(request,response){
+app.get("/",async function(request,response){
 var resbody;
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("fridge");
-    //Find the first document in the customers collection:
-    dbo.collection("items").findOne({}, function(err, result) {
-      if (err) throw err;
-      console.log(result);
-      resbody=result.Labels
-      response.render('index',{body:resbody})
-      db.close();
-    });
-  });
+var url = 'mongodb+srv://yogesh:yogesh14@cluster0.eauui.mongodb.net/test'
+await mongoose.connect(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+});
+  // MongoClient.connect(url, function(err, db) {
+  //   if (err) throw err;
+  //   var dbo = db.db("fridge");
+  //   //Find the first document in the customers collection:
+  //   dbo.collection("items").findOne({}, function(err, result) {
+  //     if (err) throw err;
+  //     console.log(result);
+  //     resbody=result.Labels
+  //     response.render('index',{body:resbody})
+  //     db.close();
+  //   });
+  // });
 
 
 
@@ -48,7 +53,7 @@ var resbody;
 });
 
 app.get("/insert",function(request,response){
-  res=lib.imagecontrol()
+  res=lib.splitImage()
   console.log(res);
   if(res==0){
     response.json({ status: 'failed' });
@@ -57,4 +62,4 @@ app.get("/insert",function(request,response){
     response.json({ status: 'ok' });
   }
 
-})
+});
